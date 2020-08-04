@@ -1,3 +1,5 @@
+//Write code to remove duplicates from an unsorted linked list
+
 public class RemoveDups{
     public void removeDups(LinkedListNode head){
         if(head == null) return;
