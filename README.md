@@ -1,2 +1,1 @@
 # interview
-Interview prep board
