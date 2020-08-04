@@ -1,0 +1,191 @@
+// 2 string has same length
+// ASCII or 26 letters
+// 1 HashMap<Character> 3 for loops O(3*n) -> O(n) Space O(n)
+// Optimal HashMap<> O(2*n) -> O(n) Space O(n) 
+// int[128] Time O(n) Space O(1) 
+
+public static boolean checkPermutation(String s1, String s2){
+	if(s1.length() != s2.length()) return false;
+
+	int[] charCount = new int[128];
+	for(int i = 0; i < s1.lenght(); i++){
+		char c1 = s1.charAt(i);
+		char c2 = s2.charAt(i);
+		charCount[c1 - 'a']++;
+		charCount[c2 - 'a']--;
+	}
+
+	for(int i : charCount){
+		if(i != 0) return false;
+	}
+	
+	return true;
+}
+
+//temp String, Stringbuilder
+
+public static String urlify(String s, int n){
+	char[] modifiedUrl = new char[n];
+	for(int i = 0, j= 0; i < n; i++, j++){
+		char c = s.charAt(j);
+		if( c == ' ')
+			modifiedUrl[i] = '%';
+			modifiedUrl[++i] = '2';
+			modifiedUrl[++i] = '0';
+		else modifiedUrl[i] = c;
+	}
+	return new String(modifiedUrl);
+
+	StringBuilder st = new StringBuilder();
+	for(char c : s.toCharArray()){
+		if(c == ' ')
+			st.append("%20");
+		else st.append(c);
+	}
+	return st.toString();
+}
+
+public static boolean palPermutation(String s){
+	s = s.trim();
+	s = s.replaceAll("[^a-zA-Z]+", "").toLowerCase();
+	int unique = 0;
+	int[] counter = new int[26];
+	for(char c : s.toCharArray()){
+		counter[c - 'a']++;
+	}
+
+	for(int i = 0; i < 26; i++){
+		if(counter[i] % 2 != 0 && unique != 0)
+			return false;
+		if(counter[i] % 2 != 0 && unique == 0)
+			unique++;
+	}
+	return true;
+
+}
+
+public static boolean palindromPer(String s){
+	s = s.replaceAll("[^a-zA-Z]+", "").toLowerCase();
+	int checker = 0;
+
+	for(char c : s.toCharArray()){
+		int var = c - 'a';
+		checker ^= (1 << var);
+	}
+	int oddCharCount = 0;
+
+	for(int i = 0; i < 26; i++){
+		if( (checker & (1 << i)) > 0 )
+			oddCharCount++;
+	}
+
+	return (oddCharCount <= 1);
+}
+
+public static boolean oneAway(String s1, String s2){
+	if(Math.abs(s1.length() - s2.length()) > 1) return false;
+	if(s1.length() == s2.length()) 
+		return sameLen(s1,s2);
+	if(s1.length() > s2.length())
+		return oneDiffer(s1, s2);
+	else return oneDiffer(s2, s1);
+
+
+}
+
+public static boolean sameLen(String s1, String s2){
+	int diff = 1;
+	int i = 0;
+	while(diff >= 0 && i < s1.length()){
+		if(s1.charAt(i) != s2.charAt(i))
+			diff--;
+		i++;
+	}
+	return (i == s1.length());
+}
+
+public static boolean oneDiffer(String s1, String s2){
+	int diff = 1;
+	int i = 0;
+	int j = 0;
+	while(i < s1.length() && diff >= 0){
+		if(s1.charAt(i) != s2.charAt(j)){
+			diff--;
+			i++;
+		}
+		i++;
+		j++;
+	}
+	return (i == s1.length())
+}
+
+public static String stringCompresssion(String word){
+	int originalLen = word.length();
+	int counter = 0;
+	StringBuilder st = new StringBuilder();
+	for(int i = 1; i < word.length(); i++){
+		if(word.charAt(i-1) != word.charAt(i)){
+			st.append(word.charAt(i-1));
+			st.append(counter);
+			counter = 0;
+		} else counter++;
+	}
+	st.append(word.charAt(originalLen - 1));
+	st.append(counter);
+	String compressed = st.toString();
+	return compressed.length() > originalLen ? word : compressed;
+}
+
+public static int[][] rotateMatrix(int[][] matrix){
+	int n = int.length;
+
+	for(int i = 0; i < n/2 + n%2; i++){
+		for(int j = 0; j < n / 2; j++){
+			int[] temp = new int[4];
+			int[] curr = new int[]{i, j};
+			for(int k = 0; k < 4; k++){
+				temp[k] = matrix[curr[0]][curr[1]];
+				curr = helper(curr[0], curr[1], n);
+			}
+			for(int k = 0; k < 4; k++){
+				matrix[curr[0]][curr[1]] = temp[(k + 3) % 4];
+				curr = helper(curr[0], curr[1], n);
+			}
+		}
+	}
+}
+
+public static int[] helper(int i, int j, int n){
+	return new int[]{j, n - i - 1};
+}
+
+
+public static int[][] zeroMatrix(int[][] matrix){
+	int m = matrix.length;
+	int n = matrix[0].length;
+	List<int[]> zeros = new ArrayList<>();
+	for(int row = 0; row < m; row++){
+		for(int col = 0; col < n; col++){
+			if(matrix[row][col] == 0)
+				zeros.add(new int[]{row, col});
+		}
+	}
+
+	int[] curr = new int[2];
+	for(int i = 0; i < zeros.size(); i++){
+		curr = zeros.get(i);
+		for(int col = 0; col < n; col++){
+			matrix[curr[0]][col] = 0;
+		}
+		for(int row = 0; row < m; row++){
+			matrix[row][curr[1]] = 0;
+		}
+	}
+
+	return matrix;
+}
+
+public static boolean isSubstring(String s1, String s2){
+	String temp = s1 + s1;
+	return (s1.indexOf(s2) != -1);
+}
