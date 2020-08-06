@@ -1,22 +1,21 @@
-public class Partition{
-    public void partitionList(LinkedListNode head, int partition){
-        if(head == null) return;
+public class Partition {
+    public void partitionList(LinkedListNode node, int partition) {
+        if (node == null) return;
+        LinkedListNode head = node;
+        LinkedListNode tail = node;
 
-        LinkedListNode lowerHead = null;
-        LinkedListNode greatherHead = null;
-
-        while(head != null){
-            if(head.data < partition){
-//                if(lowerHead == null){
-//                    lowerHead.data = head.data;
-//                }
-                lowerHead.next = head;
+        while(node != null){
+            LinkedListNode nextNode = node.next;
+            if(node.data < partition){
+                node.next = head; // insert before the head
+                head = node;      // changing head to the beginning
             } else {
-                greatherHead.next = head;
+                tail.next = node; //adding last after tail
+                tail = node;      // shifting tail to the end
             }
+            node = nextNode;      // runner
         }
-        lowerHead.next = null;
-        greatherHead.next = null;
-
+        tail.next = null;           // make tail null
+        return head;
     }
 }
