@@ -33,6 +33,8 @@ public class LetterCombinationPhoneNumber{
             result.add(combination);
             return;
         }
+        //Converting numbers to mapped Letters
+        // 2 -> "abc",  3 -> "def"
         String letters = mapping.get(digits.charAt(index) + "");
         for(int i = 0; i < letters.length(); i++){
             combinationRecursive(result, digits, index + 1, combination + letters.charAt(i));
